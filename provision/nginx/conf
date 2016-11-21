@@ -1,0 +1,38 @@
+
+server {
+        listen   80;
+
+        root /var/www/example;
+        index index.php;
+
+        server_name example.dev;
+
+        location / {
+                try_files $uri $uri/ /index.php$is_args$args;
+        }
+
+        location ~ \.php$ {
+                try_files $uri =404;
+                include fastcgi.conf;
+
+                fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+                #fastcgi_pass 127.0.0.1:8989;
+
+                fastcgi_buffers 16 128k;
+                fastcgi_buffer_size 128k;
+        }
+
+        access_log /var/log/nginx/cba.vg.blueearth.net_access.log;
+        error_log /var/log/nginx/cba.vg.blueearth.net_error.log notice;
+
+        location = /check.txt {
+                access_log off;
+        }
+
+}
+
+
+
+
+
+
